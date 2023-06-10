@@ -1,0 +1,9 @@
+dhis2:
+  source:
+    base-url: https://play.dhis2.org/dev/api
+    username: admin
+    password: district
+  target:
+    base-url: https://play.dhis2.org/2.39.2/api
+    username: admin
+    password: district

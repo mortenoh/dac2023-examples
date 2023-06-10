@@ -11,10 +11,10 @@
     </parent>
 
     <groupId>com.example.dhis2</groupId>
-    <artifactId>dhis2-orgunit</artifactId>
+    <artifactId>dhis2-ou</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>dhis2-orgunit</name>
-    <description>dhis2-orgunit</description>
+    <name>dhis2-ou</name>
+    <description>dhis2-ou</description>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
