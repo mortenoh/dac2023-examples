@@ -24,9 +24,7 @@ public class OrgUnitFhirBundle implements TypeConverters {
 
     @Converter
     public Bundle toBundle(Metadata metadata, Exchange exchange) {
-        Bundle bundle = new Bundle().setType(Bundle.BundleType.BATCH);
-
-        exchange.getIn().setHeader(FhirConstants.PROPERTY_PREFIX + "bundle", bundle);
+        Bundle bundle = new Bundle().setType(Bundle.BundleType.TRANSACTION);
 
         if (metadata.getOrganisationUnits().isPresent()) {
             for (OrganisationUnit ou : metadata.getOrganisationUnits().get()) {
@@ -34,6 +32,8 @@ public class OrgUnitFhirBundle implements TypeConverters {
                 addLocation(ou, bundle);
             }
         }
+
+        exchange.getIn().setHeader(FhirConstants.PROPERTY_PREFIX + "bundle", bundle);
 
         return bundle;
     }
@@ -83,7 +83,7 @@ public class OrgUnitFhirBundle implements TypeConverters {
             location.setDescription(ou.getDescription().get());
         }
 
-        location.getManagingOrganization().setReference("Organization/" + ou.getId().get());
+        // location.getManagingOrganization().setReference("Organization/" + ou.getId().get());
         location.setMode(Location.LocationMode.INSTANCE);
 
         if (ou.getParent().isPresent()) {

@@ -1,5 +1,8 @@
 package com.example.dhis2;
 
+import ca.uhn.fhir.context.FhirContext;
+import ca.uhn.fhir.context.FhirVersionEnum;
+import ca.uhn.fhir.rest.client.api.IGenericClient;
 import com.example.dhis2.configuration.MainProperties;
 import lombok.RequiredArgsConstructor;
 import org.apache.camel.component.servlet.CamelHttpTransportServlet;
@@ -25,11 +28,10 @@ public class Application {
     }
 
     @Bean
-    public ServletRegistrationBean<Servlet> servletRegistrationBean()
-    {
-        ServletRegistrationBean<Servlet> registration = new ServletRegistrationBean<>( new CamelHttpTransportServlet(),
-                "/fhir/*" );
-        registration.setName( "CamelServlet" );
+    public ServletRegistrationBean<Servlet> servletRegistrationBean() {
+        ServletRegistrationBean<Servlet> registration = new ServletRegistrationBean<>(new CamelHttpTransportServlet(),
+                "/fhir/*");
+        registration.setName("CamelServlet");
         return registration;
     }
 
@@ -44,12 +46,12 @@ public class Application {
     }
 
     @Bean
-    public Dhis2Client dhis2ClientTarget() {
-        return Dhis2ClientBuilder
-                .newClient(
-                        properties.getTarget().getBaseUrl(),
-                        properties.getTarget().getUsername(),
-                        properties.getTarget().getPassword())
-                .build();
+    public FhirContext fhirContext() {
+        return FhirVersionEnum.R4.newContext();
+    }
+
+    @Bean
+    public IGenericClient fhirClient(FhirContext fhirContext) {
+        return fhirContext.newRestfulGenericClient(properties.getTarget().getBaseUrl());
     }
 }
