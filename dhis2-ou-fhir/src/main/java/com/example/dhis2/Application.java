@@ -34,7 +34,7 @@ public class Application {
     }
 
     @Bean
-    public Dhis2Client dhis2ClientSource() {
+    public Dhis2Client dhis2Client() {
         return Dhis2ClientBuilder
                 .newClient(
                         properties.getSource().getBaseUrl(),
