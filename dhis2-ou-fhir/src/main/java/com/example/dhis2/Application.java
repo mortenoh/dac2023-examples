@@ -28,7 +28,7 @@ public class Application {
     public ServletRegistrationBean<Servlet> servletRegistrationBean()
     {
         ServletRegistrationBean<Servlet> registration = new ServletRegistrationBean<>( new CamelHttpTransportServlet(),
-                "/dhis/*" );
+                "/fhir/*" );
         registration.setName( "CamelServlet" );
         return registration;
     }

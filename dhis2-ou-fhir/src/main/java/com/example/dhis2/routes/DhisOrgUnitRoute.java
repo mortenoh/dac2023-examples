@@ -16,7 +16,14 @@ public class DhisOrgUnitRoute extends RouteBuilder {
     public void configure() throws Exception {
         // trigger once every startup
         from("timer:foo?repeatCount=1")
-                .to("direct:read-dhis-ou");
+                .routeId("Initial Sync")
+                .to("direct:trigger-sync");
+
+        // Route for triggering sync
+        from("direct:trigger-sync")
+                .routeId("Triggering sync")
+                .to("direct:read-dhis-ou")
+                .to("direct:write-fhir-ou");
 
         // Read OU from source and unmarshall into MetaData
         from("direct:read-dhis-ou")
@@ -29,14 +36,20 @@ public class DhisOrgUnitRoute extends RouteBuilder {
                 .unmarshal().json(Metadata.class)
                 .convertBodyTo( Bundle.class );
 
+        // Write OU to target
+        from("direct:write-fhir-ou")
+                .marshal().fhirJson("R4", true);
+
         // Expose as API
         from("direct:get-dhis-ou")
                 .to("direct:read-dhis-ou")
                 .marshal().fhirJson( "R4", true );
 
         rest("/")
-                .get("/ou")
+                .get("/baseR4/Bundle")
                 .produces(MediaType.APPLICATION_JSON_VALUE)
-                .to("direct:get-dhis-ou");
+                .to("direct:get-dhis-ou")
+                .post("/trigger")
+                .to("direct:trigger-sync");
     }
 }
