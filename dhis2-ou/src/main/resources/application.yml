@@ -7,3 +7,19 @@ dhis2:
     base-url: https://play.dhis2.org/2.39.2/api
     username: admin
     password: district
+spring:
+  jmx:
+    enabled: true
+management:
+  endpoints:
+    web:
+      exposure:
+        include: hawtio,jolokia
+  endpoint:
+    env:
+      enabled: on
+  info:
+    java:
+      enabled: on
+hawtio:
+  authenticationEnabled: false

@@ -29,7 +29,7 @@ public class Application {
     {
         ServletRegistrationBean<Servlet> registration = new ServletRegistrationBean<>( new CamelHttpTransportServlet(),
                 "/dhis/*" );
-        registration.setName( "CamelServlet" );
+         registration.setName( "CamelServlet" );
         return registration;
     }
 
